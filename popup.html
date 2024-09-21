@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval';"> -->
+
+    <title>Simple List App</title>
+    <style>
+        .item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .item input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .item button {
+            margin-left: 10px;
+        }
+    </style>
+    <!-- <script defer src="./node_modules/alpinejs/dist/cdn.min.js" ></script> -->
+    <!-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script> -->
+    <!-- <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/csp@3.14.1/dist/cdn.min.js"></script> -->
+    <script defer src="./cdn.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div x-data="listManager">
+            <h2>域名</h2>
+            <input @input="setItem">
+            <button @click="addItem">新增</button>
+            <ul>
+                <template x-for="item in items" :key="item.id">
+                    <li class="item">
+                        <span x-text="item.host"></span>
+                        <button @click="removeItem">删除</button>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- <script>
+        function listManager() {
+            return {
+                newItem: '',
+                items: [],
+                async init() {
+                    // 获取存储的 hostList
+                    const { result } = await chrome.storage.local.get('hostList');
+                    this.items = result || [];
+                },
+                async addItem() {
+                    if (this.newItem.trim() === '') return;
+                    const { hostList } = await chrome.storage.local.get('hostList');
+                    if (hostList.includes(this.newItem)) {
+                        console.log("域名已存在");
+                        return;
+                    }
+                    hostList.push(this.newItem.trim());
+                    this.items = hostList;
+                    await chrome.storage.local.set({ hostList });
+                },
+                async removeItem(item) {
+                    const { hostList } = await chrome.storage.local.get('hostList');
+                    hostList = hostList.filter(host => host != item);
+                    this.items = hostList;
+                    await chrome.storage.local.set({ hostList });
+                }
+                // toggleItem(id) {
+                //     const item = this.items.find(item => item.id === id);
+                //     item.enabled = !item.enabled;
+                // }
+                , setItem(event) {
+                    this.newItem = event.target.value;
+                }
+            }
+        }
+
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('listManager', listManager);
+        })
+    </script> -->
+    <script src="popup.js"></script>
+</body>
+
+</html>
