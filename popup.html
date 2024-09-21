@@ -30,7 +30,7 @@
 
 <body>
     <div id="app">
-        <div x-data="listManager">
+        <div x-data="hostList">
             <h2>域名</h2>
             <input @input="setItem">
             <button @click="addItem">新增</button>
@@ -43,49 +43,21 @@
                 </template>
             </ul>
         </div>
+        <div x-data="swimLaneList">
+            <h2>泳道</h2>
+            <input @input="setItem">
+            <button @click="addItem">新增</button>
+            <ul>
+                <template x-for="item in items">
+                    <li class="item">
+                        <span x-text="item.value"></span>
+                        <button @click="removeItem">删除</button>
+                    </li>
+                </template>
+            </ul>
+        </div>
     </div>
     
-    <!-- <script>
-        function listManager() {
-            return {
-                newItem: '',
-                items: [],
-                async init() {
-                    // 获取存储的 hostList
-                    const { result } = await chrome.storage.local.get('hostList');
-                    this.items = result || [];
-                },
-                async addItem() {
-                    if (this.newItem.trim() === '') return;
-                    const { hostList } = await chrome.storage.local.get('hostList');
-                    if (hostList.includes(this.newItem)) {
-                        console.log("域名已存在");
-                        return;
-                    }
-                    hostList.push(this.newItem.trim());
-                    this.items = hostList;
-                    await chrome.storage.local.set({ hostList });
-                },
-                async removeItem(item) {
-                    const { hostList } = await chrome.storage.local.get('hostList');
-                    hostList = hostList.filter(host => host != item);
-                    this.items = hostList;
-                    await chrome.storage.local.set({ hostList });
-                }
-                // toggleItem(id) {
-                //     const item = this.items.find(item => item.id === id);
-                //     item.enabled = !item.enabled;
-                // }
-                , setItem(event) {
-                    this.newItem = event.target.value;
-                }
-            }
-        }
-
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('listManager', listManager);
-        })
-    </script> -->
     <script src="popup.js"></script>
 </body>
 
