@@ -4,27 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval';"> -->
-
     <title>Simple List App</title>
-    <style>
-        .item {
-            display: flex;
-            align-items: center;
-            margin: 10px 0;
-        }
-
-        .item input[type="checkbox"] {
-            margin-right: 10px;
-        }
-
-        .item button {
-            margin-left: 10px;
-        }
-    </style>
-    <!-- <script defer src="./node_modules/alpinejs/dist/cdn.min.js" ></script> -->
-    <!-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script> -->
-    <!-- <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/csp@3.14.1/dist/cdn.min.js"></script> -->
+    <link rel="stylesheet" href="style.css">
     <script defer src="./cdn.min.js"></script>
 </head>
 
@@ -51,13 +32,17 @@
                 <template x-for="item in items">
                     <li class="item">
                         <span x-text="item.value"></span>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="toggle" class="toggle-input" x-bind:checked="item.enable" @input="toggle" x-bind:value="item.value">
+                            <label for="toggle" class="toggle-label"></label>
+                        </div>
                         <button @click="removeItem">删除</button>
                     </li>
                 </template>
             </ul>
         </div>
     </div>
-    
+
     <script src="popup.js"></script>
 </body>
 

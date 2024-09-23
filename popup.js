@@ -90,6 +90,8 @@ function swimLaneList() {
                 console.log("泳道已存在");
                 return;
             }
+
+            
             // 将其他泳道状态设为false
             swimLaneList.forEach(element => {
                 element.enable = false;
@@ -99,19 +101,52 @@ function swimLaneList() {
                 "enable": true
             });
             await chrome.storage.local.set({ swimLaneList });
+            
             enbaleSwimLane(newItem);
             this.init();
         },
         async removeItem() {
             const item = this.$data.item;
+            console.log(this);
+            console.log(this.$data);
+            console.log(this.$data.item);
             var { swimLaneList } = await chrome.storage.local.get("swimLaneList");
             swimLaneList = swimLaneList.filter(element => element.value != item.value);
             invalidateSwimlane(item.value);
-
+            await chrome.storage.local.set({ swimLaneList });
             this.init();
         },
         setItem(event) {
             this.newItem = event.target.value;
+        },
+        async toggle(event){
+            const status = event.target.checked;
+            const item = this.$data.item;
+            console.log(this);
+            console.log(this.$data);
+            console.log(item);
+            const { swimLaneList } = await chrome.storage.local.get("swimLaneList");
+
+
+            if(status){
+                swimLaneList.forEach(element => {
+                    if(element.value === item.value){
+                        element.enable = true;
+                    }else{
+                        element.enable = false;
+                    }
+                })
+                enbaleSwimLane(item.value);
+            }else{
+                swimLaneList.forEach(element =>{
+                    if(element.value === item.value){
+                        element.enable = false;
+                    }
+                })
+                invalidateSwimlane(item.value);
+            }
+            await chrome.storage.local.set({ swimLaneList });
+            this.init();
         }
     }
 }
@@ -172,6 +207,5 @@ async function invalidateSwimlane(swimLane) {
         currentSwimLane = '';
         refreshSwimLane();
     }
-
 }
 

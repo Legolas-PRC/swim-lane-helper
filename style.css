@@ -1,0 +1,80 @@
+.item {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.item input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.item button {
+    margin-left: 10px;
+}
+
+/* style.css */
+/* body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+  }
+  
+  .container {
+    display: flex;
+    align-items: center;
+  }
+  
+  input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+    */
+  
+  .toggle-switch {
+    position: relative;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .toggle-input {
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  
+  .toggle-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 34px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .toggle-label:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+  }
+  
+  .toggle-input:checked + .toggle-label {
+    background-color: #4caf50;
+  }
+  
+  .toggle-input:checked + .toggle-label:before {
+    transform: translateX(26px);
+  } 
+  

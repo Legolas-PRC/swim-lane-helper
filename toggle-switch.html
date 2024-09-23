@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toggle Switch Component</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        /* style.css */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 34px;
+        }
+
+        .toggle-input {
+            width: 0;
+            height: 0;
+            opacity: 0;
+        }
+
+        .toggle-label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            border-radius: 34px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-label:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .toggle-input:checked+.toggle-label {
+            background-color: #4caf50;
+        }
+
+        .toggle-input:checked+.toggle-label:before {
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="toggle-switch">
+        <input type="checkbox" id="toggle" class="toggle-input">
+        <label for="toggle" class="toggle-label"></label>
+    </div>
+
+    <!-- <script src="script.js"></script> -->
+    <script>
+        // script.js
+        document.addEventListener("DOMContentLoaded", () => {
+            const toggleInput = document.querySelector('.toggle-input');
+
+            toggleInput.addEventListener('change', (event) => {
+                if (event.target.checked) {
+                    console.log("Toggle is ON");
+                    // 在这里添加打开开关时的逻辑
+                } else {
+                    console.log("Toggle is OFF");
+                    // 在这里添加关闭开关时的逻辑
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
