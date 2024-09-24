@@ -7,11 +7,6 @@ function hostList() {
         newItem: '',
         items: [],
         async init() {
-            // 获取存储的 hostList
-            // const { hostList } = await chrome.storage.local.get('hostList');
-            // this.items = hostList || [];
-            // console.log(hostList);
-            // console.log(await chrome.declarativeNetRequest.getDynamicRules());
             const rules = await chrome.declarativeNetRequest.getDynamicRules();
             console.log(rules);
             this.items = rules.map(element => {
@@ -23,23 +18,6 @@ function hostList() {
             console.log(this.items);
         },
         async addItem() {
-            // 修改配置项
-            // if (this.newItem.trim() === '') return;
-            // const { hostList } = await chrome.storage.local.get('hostList');
-            // if (hostList.map(element => element.host).includes(this.newItem)) {
-            //     console.log("域名已存在");
-            //     return;
-            // }
-            // const { currentMaxId } = await chrome.storage.local.get("currentMaxId");
-            // const hostItem = {
-            //     "id": currentMaxId + 1,
-            //     "host": this.newItem.trim()
-            // };
-            // hostList.push(hostItem);
-            // this.items = hostList;
-            // addHost(hostItem);
-            // await chrome.storage.local.set({ hostList });
-            // await chrome.storage.local.set({ currentMaxId: currentMaxId + 1 });
             const newItem = this.newItem.trim();
             if (newItem === '') return;
             const hostList = this.items.map(element => element.host);
@@ -48,17 +26,11 @@ function hostList() {
                 console.log("域名已存在");
                 return;
             }
-            addHost(newItem, Math.max(idList) + 1);
+            
+            addHost(newItem, idList.length === 0 ? 1 :Math.max(...idList) + 1);
             this.init();
         },
         async removeItem() {
-            // // 修改配置项
-            // const item = this.$data.item;
-            // var { hostList } = await chrome.storage.local.get('hostList');
-            // hostList = hostList.filter(host => host.id != item.id);
-            // this.items = hostList;
-            // deleteHost(item);
-            // await chrome.storage.local.set({ hostList });
             const item = this.$data.item;
             deleteHost(item);
             this.init();
@@ -105,11 +77,9 @@ function swimLaneList() {
             enbaleSwimLane(newItem);
             this.init();
         },
-        async removeItem() {
+        async removeItem(event) {
+            console.log(event);
             const item = this.$data.item;
-            console.log(this);
-            console.log(this.$data);
-            console.log(this.$data.item);
             var { swimLaneList } = await chrome.storage.local.get("swimLaneList");
             swimLaneList = swimLaneList.filter(element => element.value != item.value);
             invalidateSwimlane(item.value);
@@ -122,11 +92,7 @@ function swimLaneList() {
         async toggle(event){
             const status = event.target.checked;
             const item = this.$data.item;
-            console.log(this);
-            console.log(this.$data);
-            console.log(item);
             const { swimLaneList } = await chrome.storage.local.get("swimLaneList");
-
 
             if(status){
                 swimLaneList.forEach(element => {
@@ -166,6 +132,7 @@ async function refreshSwimLane() {
 }
 
 async function addHost(newHost, id) {
+    console.log("newHost:"+newHost,"id:"+id);
     const urlFilter = "||" + newHost;
     const redirectHost = currentSwimLane === '' ? newHost : currentSwimLane + '-sl-' + newHost;
     // id怎么取

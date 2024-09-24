@@ -29,12 +29,14 @@
             <input @input="setItem">
             <button @click="addItem">新增</button>
             <ul>
-                <template x-for="item in items">
+                <template x-for="item in items" :key="item.value">
                     <li class="item">
                         <span x-text="item.value"></span>
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="toggle" class="toggle-input" x-bind:checked="item.enable" @input="toggle" x-bind:value="item.value">
-                            <label for="toggle" class="toggle-label"></label>
+                        <div class="toggle-switch" >
+                            <!-- <span x-text="item.value"></span>
+                            <span x-text="item.enable"></span> -->
+                            <input type="checkbox" :id="item.value" class="toggle-input" x-bind:checked="item.enable" @input="toggle">
+                            <label :for="item.value" class="toggle-label"></label>
                         </div>
                         <button @click="removeItem">删除</button>
                     </li>
