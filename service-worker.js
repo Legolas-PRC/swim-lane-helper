@@ -17,10 +17,6 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
       "hostList": [],
       "currentMaxId": 1,
       "swimLaneList": [
-        {
-          "value":"swimLane",
-          "enable":false
-        }
       ]
     });
   }

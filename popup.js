@@ -124,11 +124,19 @@ document.addEventListener('alpine:init', () => {
 
 async function refreshSwimLane() {
     const rules = await chrome.declarativeNetRequest.getDynamicRules();
+    const removeRuleIds = rules.map(element => element.id);
+
     rules.forEach(element => {
         const host = element.condition.urlFilter.slice(2);
         const redirectHost = currentSwimLane === '' ? host : currentSwimLane + '-sl-' + host;
         element.action.redirect.transform.host = redirectHost;
     })
+    await chrome.declarativeNetRequest.updateDynamicRules({
+        removeRuleIds: removeRuleIds,
+        addRules: rules,
+    })
+    console.log(currentSwimLane);
+    console.log(rules);
 }
 
 async function addHost(newHost, id) {
@@ -175,4 +183,3 @@ async function invalidateSwimlane(swimLane) {
         refreshSwimLane();
     }
 }
-
