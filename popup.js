@@ -12,7 +12,8 @@ function hostList() {
             this.items = rules.map(element => {
                 return {
                     "id": element.id,
-                    "host": element.condition.urlFilter.slice(2)
+                    "host": element.condition.urlFilter.slice(2),
+                    "enable": element.action.redirect.transform.host == element.condition.urlFilter.slice(2)
                 }
             }) || [];
             console.log(this.items);
@@ -26,8 +27,8 @@ function hostList() {
                 console.log("域名已存在");
                 return;
             }
-            
-            addHost(newItem, idList.length === 0 ? 1 :Math.max(...idList) + 1);
+
+            addHost(newItem, idList.length === 0 ? 1 : Math.max(...idList) + 1);
             this.init();
         },
         async removeItem() {
@@ -37,6 +38,26 @@ function hostList() {
         },
         setItem(event) {
             this.newItem = event.target.value;
+        },
+        async toggle(event) {
+            const status = event.target.checked;
+            const item = this.$data.item;
+            const rules = await chrome.declarativeNetRequest.getDynamicRules({ruleIds:[item.id]});
+            const rule = rules[0];
+            console.log(rule);
+            console.log(rule.condition);
+            if (status) {
+                const host = rule.condition.urlFilter.slice(2);
+                rule.action.redirect.transform.host = currentSwimLane === '' ? host : currentSwimLane + "-sl-" + host;
+            } else {
+                rule.action.redirect.transform.host = rule.condition.urlFilter.slice(2);
+            }
+            const deleteIdList = [item.id];
+            const updateList = [rule];
+            await chrome.declarativeNetRequest.updateDynamicRules({
+                removeRuleIds: deleteIdList,
+                addRules: updateList
+            });
         }
     }
 }
@@ -63,7 +84,7 @@ function swimLaneList() {
                 return;
             }
 
-            
+
             // 将其他泳道状态设为false
             swimLaneList.forEach(element => {
                 element.enable = false;
@@ -73,7 +94,7 @@ function swimLaneList() {
                 "enable": true
             });
             await chrome.storage.local.set({ swimLaneList });
-            
+
             enbaleSwimLane(newItem);
             this.init();
         },
@@ -89,23 +110,23 @@ function swimLaneList() {
         setItem(event) {
             this.newItem = event.target.value;
         },
-        async toggle(event){
+        async toggle(event) {
             const status = event.target.checked;
             const item = this.$data.item;
             const { swimLaneList } = await chrome.storage.local.get("swimLaneList");
 
-            if(status){
+            if (status) {
                 swimLaneList.forEach(element => {
-                    if(element.value === item.value){
+                    if (element.value === item.value) {
                         element.enable = true;
-                    }else{
+                    } else {
                         element.enable = false;
                     }
                 })
                 enbaleSwimLane(item.value);
-            }else{
-                swimLaneList.forEach(element =>{
-                    if(element.value === item.value){
+            } else {
+                swimLaneList.forEach(element => {
+                    if (element.value === item.value) {
                         element.enable = false;
                     }
                 })
@@ -140,7 +161,7 @@ async function refreshSwimLane() {
 }
 
 async function addHost(newHost, id) {
-    console.log("newHost:"+newHost,"id:"+id);
+    console.log("newHost:" + newHost, "id:" + id);
     const urlFilter = "||" + newHost;
     const redirectHost = currentSwimLane === '' ? newHost : currentSwimLane + '-sl-' + newHost;
     // id怎么取
@@ -174,12 +195,14 @@ async function deleteHost(hostItem) {
 
 async function enbaleSwimLane(swimLane) {
     currentSwimLane = swimLane;
+    await chrome.storage.local.set({ currentSwimLane });
     refreshSwimLane();
 }
 
 async function invalidateSwimlane(swimLane) {
     if (swimLane === currentSwimLane) {
         currentSwimLane = '';
+        await chrome.storage.local.set({ currentSwimLane });
         refreshSwimLane();
     }
 }

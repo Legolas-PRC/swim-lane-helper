@@ -19,6 +19,10 @@
                 <template x-for="item in items" :key="item.id">
                     <li class="item">
                         <span x-text="item.host"></span>
+                        <div class="toggle-switch">
+                            <input type="checkbox" :id="item.id" class="toggle-input" x-bind:checked="item.enable" @input="toggle">
+                            <label :for="item.id" class="toggle-label"></label>
+                        </div>
                         <button @click="removeItem">删除</button>
                     </li>
                 </template>
@@ -33,8 +37,6 @@
                     <li class="item">
                         <span x-text="item.value"></span>
                         <div class="toggle-switch" >
-                            <!-- <span x-text="item.value"></span>
-                            <span x-text="item.enable"></span> -->
                             <input type="checkbox" :id="item.value" class="toggle-input" x-bind:checked="item.enable" @input="toggle">
                             <label :for="item.value" class="toggle-label"></label>
                         </div>

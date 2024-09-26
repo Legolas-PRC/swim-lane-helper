@@ -15,7 +15,7 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
     // chrome.storage.local 持久化数据到本地
     await chrome.storage.local.set({
       "hostList": [],
-      "currentMaxId": 1,
+      "currentSwimLane": "",
       "swimLaneList": [
       ]
     });
