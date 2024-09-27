@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "swim line helper",
-    "version": "1.0",
+    "version": "2.0",
     "description": "redict url to swim line env",
     "permissions": [
         "declarativeNetRequest",

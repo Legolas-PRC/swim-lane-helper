@@ -18,10 +18,10 @@
             <ul>
                 <template x-for="item in items" :key="item.id">
                     <li class="item">
-                        <span x-text="item.host"></span>
+                        <span x-text="item.value"></span>
                         <div class="toggle-switch">
-                            <input type="checkbox" :id="item.id" class="toggle-input" x-bind:checked="item.enable" @input="toggle">
-                            <label :for="item.id" class="toggle-label"></label>
+                            <input type="checkbox" :id="item.uniqueId" class="toggle-input" :checked="item.enable" @input="toggle">
+                            <label :for="item.uniqueId" class="toggle-label"></label>
                         </div>
                         <button @click="removeItem">删除</button>
                     </li>
@@ -33,12 +33,12 @@
             <input @input="setItem">
             <button @click="addItem">新增</button>
             <ul>
-                <template x-for="item in items" :key="item.value">
+                <template x-for="item in items" :key="item.id">
                     <li class="item">
                         <span x-text="item.value"></span>
                         <div class="toggle-switch" >
-                            <input type="checkbox" :id="item.value" class="toggle-input" x-bind:checked="item.enable" @input="toggle">
-                            <label :for="item.value" class="toggle-label"></label>
+                            <input type="checkbox" :id="item.uniqueId" class="toggle-input" x-bind:checked="item.enable" @input="toggle">
+                            <label :for="item.uniqueId" class="toggle-label"></label>
                         </div>
                         <button @click="removeItem">删除</button>
                     </li>
@@ -47,7 +47,7 @@
         </div>
     </div>
 
-    <script src="popup.js"></script>
+    <script src="popup2.js"></script>
 </body>
 
 </html>
